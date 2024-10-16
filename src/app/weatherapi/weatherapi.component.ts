@@ -25,7 +25,7 @@ export class WeatherapiComponent {
 
   fetchWeather() {
     if (this.city) {
-      this.http.get(`http://api.weatherapi.com/v1/current.json?key=${this.apiKey}&q=${this.city}`)
+      this.http.get(`https://api.weatherapi.com/v1/current.json?key=${this.apiKey}&q=${this.city}`)
         .subscribe(
           (data: any) => {
             this.weather = data;
@@ -49,7 +49,7 @@ export class WeatherapiComponent {
   
 
   fetchForecast(city: string) {
-    this.http.get(`http://api.weatherapi.com/v1/forecast.json?key=${this.apiKey}&q=${city}&days=5`)
+    this.http.get(`https://api.weatherapi.com/v1/forecast.json?key=${this.apiKey}&q=${city}&days=5`)
       .subscribe(
         (data: any) => {
           this.forecast = data.forecast.forecastday;
