@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Weather App</title>
+</head>
+<body>
+
+
+<div class="container text-center my-5">
+    <h1 data-aos="fade-down">Weather App</h1>
+    <div class="input-group mb-3" data-aos="fade-right">
+      <input type="text" [(ngModel)]="city" class="form-control" placeholder="Enter city name">
+      <button class="btn btn-primary" (click)="fetchWeather()" id="search-btn">Search</button>
+    </div>
+    <div id="weather-info" class="my-3" *ngIf="weather" data-aos="fade-up">
+      <h2>{{ weather.location.name }}, {{ weather.location.country }}</h2>
+      <p>Temperature: {{ weather.current.temp_c }}°C</p>
+      <img [src]="weather.current.condition.icon" [alt]="weather.current.condition.text">
+      <p>Condition: {{ weather.current.condition.text }}</p>
+    </div>
+    <div id="forecast-info" class="row mt-4 text-center" data-aos="fade-up">
+      <div class="col-lg-2 col-md-3 col-sm-6 forecast-card me-4" *ngFor="let day of forecast">
+        <h5>{{ day.date }}</h5>
+        <img [src]="day.day.condition.icon" [alt]="day.day.condition.text">
+        <p>{{ day.day.avgtemp_c }}°C</p>
+        <p>{{ day.day.condition.text }}</p>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>
