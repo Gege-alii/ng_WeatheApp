@@ -1,48 +1,68 @@
-@keyframes gradientBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+@keyframes gradientBackground { 
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 body {
-    background: linear-gradient(45deg, #113356, #5b88b4, #15446d, #0e71d5);
-    background-size: 1000% 1000%;
-    animation: gradientBackground 15s ease infinite;
-    font-family: 'Arial', sans-serif;
-    height: 110vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  background: linear-gradient(45deg, #113356, #5b88b4, #15446d, #0e71d5);
+  background-size: 1000% 1000%;
+  animation: gradientBackground 15s ease infinite;
+  font-family: 'Arial', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.container {
+  max-width: 600px;
+}
 
 #weather-info, #forecast-info {
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  margin-top: 20px;
+}
+
+#forecast-info img {
+  width: 50px;
+}
+
+h2, p {
+  color: #333;
+}
+
+.forecast-card {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  margin: 10px auto;
+}
+
+.forecast-card h5 {
+  margin: 10px 0;
+}
+
+#weather-info img {
+  max-width: 100px;
+  height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .input-group {
+    flex-direction: column;
   }
-  
-  #forecast-info img {
-    width: 50px;
+
+  .input-group input, .input-group button {
+    width: 100%;
   }
-  
-  h2, p {
-    color: #333;
+
+  .forecast-card {
+    width: 100%;
   }
-  
-  #forecast-info .forecast-card {
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 20px;
-    margin: 10px;
-  }
-  
-  #forecast-info h5 {
-    margin: 10px 0;
-  }
-  
-  img {
-    width: 200px;
-    height: 100px;
-  }
-  
+}

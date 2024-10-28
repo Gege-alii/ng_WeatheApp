@@ -52,10 +52,21 @@ export class WeatherapiComponent {
     this.http.get(`https://api.weatherapi.com/v1/forecast.json?key=${this.apiKey}&q=${city}&days=5`)
       .subscribe(
         (data: any) => {
+          console.log('Full API Response:', data);
           this.forecast = data.forecast.forecastday;
+          console.log('Forecast Data:', this.forecast);
+          
+          if (this.forecast.length < 5) {
+            console.warn('Only partial data returned:', this.forecast);
+          }
         },
         (error) => {
-          alert('Error fetching forecast data');
+          Swal.fire({
+            title: 'Error!',
+            text: 'Error fetching forecast data.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
         }
       );
   }
