@@ -1,35 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import Swal from 'sweetalert2'; 
-
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-weatherapi',
   templateUrl: './weatherapi.component.html',
   styleUrls: ['./weatherapi.component.css']
 })
-export class WeatherapiComponent {
+export class WeatherapiComponent implements OnInit {
 
-
-  city: string = '';
-  weather: any;
-  forecast: any[] = [];
-  apiKey: string = 'dad5314993e34114b52162214241410';
+  city: string = ''; 
+  weather: any; 
+  forecast: any[] = []; 
+  apiKey: string = 'sdudbanj9u1i9916ye1r236z2dnj5q3ouqejgszs'; 
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    (window as any).AOS.init();
+    (window as any).AOS.init(); 
   }
-
   fetchWeather() {
     if (this.city) {
-      this.http.get(`https://api.weatherapi.com/v1/current.json?key=${this.apiKey}&q=${this.city}`)
+      this.http.get(`https://www.meteosource.com/api/v1/free/point?place_id=${this.city}&sections=all&timezone=UTC&language=en&units=metric&key=${this.apiKey}`)
         .subscribe(
           (data: any) => {
-            this.weather = data;
-            this.fetchForecast(this.city);
+            console.log(data);
+            this.weather = {
+              location: { name: this.city, country: data.timezone },
+              current: {
+                temp_c: data.current.temperature,
+                condition: { text: data.current.summary, icon: this.getIconUrl(data.current.icon) }
+              }
+            };
+  
+            this.forecast = data.daily.data.slice(0, 5).map((day: any) => ({
+              date: day.day,
+              avgtemp_c: day.all_day.temperature,
+              condition: { text: day.summary, icon: this.getIconUrl(day.icon) }
+            }));
           },
           (error) => {
             this.weather = null;
@@ -40,34 +48,14 @@ export class WeatherapiComponent {
               icon: 'error',
               confirmButtonText: 'OK'
             });
-            
           }
         );
     }
   }
-
   
-
-  fetchForecast(city: string) {
-    this.http.get(`https://api.weatherapi.com/v1/forecast.json?key=${this.apiKey}&q=${city}&days=5`)
-      .subscribe(
-        (data: any) => {
-          console.log('Full API Response:', data);
-          this.forecast = data.forecast.forecastday;
-          console.log('Forecast Data:', this.forecast);
-          
-          if (this.forecast.length < 5) {
-            console.warn('Only partial data returned:', this.forecast);
-          }
-        },
-        (error) => {
-          Swal.fire({
-            title: 'Error!',
-            text: 'Error fetching forecast data.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
-        }
-      );
+  getIconUrl(iconNum: number): string {
+    return `assets/images/${iconNum}.png`;
   }
+  
+  
 }

@@ -16,10 +16,6 @@ body {
   margin: 0;
 }
 
-.container {
-  max-width: 600px;
-}
-
 #weather-info, #forecast-info {
   text-align: center;
   padding: 20px;
