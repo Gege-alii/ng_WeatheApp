@@ -14,9 +14,9 @@
       <button class="btn btn-primary mt-2 mt-sm-0" (click)="fetchWeather()" id="search-btn">Search</button>
     </div>
     <div id="weather-info" class="my-3" *ngIf="weather" data-aos="fade-up">
-      <h2>{{ weather.location.name }}, {{ weather.location.country }}</h2>
+      <h2>{{ weather.location.name }}, {{ weather?.location?.country }}</h2>
       <p>Temperature: {{ weather.current.temp_c }}°C</p>
-      <img [src]="weather?.current?.condition?.icon" [alt]="weather.current.condition.text">
+      <img [src]="weather.current.condition.icon" [alt]="weather.current.condition.text">
       <p>Condition: {{ weather.current.condition.text }}</p>
     </div>
     <div id="forecast-info" class="row mt-4 text-center" data-aos="fade-up">

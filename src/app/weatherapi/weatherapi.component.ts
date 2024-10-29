@@ -21,30 +21,60 @@ export class WeatherapiComponent implements OnInit {
   }
   fetchWeather() {
     if (this.city) {
-      this.http.get(`https://www.meteosource.com/api/v1/free/point?place_id=${this.city}&sections=all&timezone=UTC&language=en&units=metric&key=${this.apiKey}`)
+      this.http.get(`https://www.meteosource.com/api/v1/free/find_places?text=${this.city}&key=${this.apiKey}`)
         .subscribe(
-          (data: any) => {
-            console.log(data);
-            this.weather = {
-              location: { name: this.city, country: data.timezone },
-              current: {
-                temp_c: data.current.temperature,
-                condition: { text: data.current.summary, icon: this.getIconUrl(data.current.icon) }
-              }
-            };
-  
-            this.forecast = data.daily.data.slice(0, 5).map((day: any) => ({
-              date: day.day,
-              avgtemp_c: day.all_day.temperature,
-              condition: { text: day.summary, icon: this.getIconUrl(day.icon) }
-            }));
+          (places: any) => {
+            if (places.length > 0) {
+              const place = places[0]; 
+              this.http.get(`https://www.meteosource.com/api/v1/free/point?place_id=${place.place_id}&sections=all&timezone=UTC&language=en&units=metric&key=${this.apiKey}`)
+                .subscribe(
+                  (data: any) => {
+                    console.log(data);
+
+                 
+                    this.weather = {
+                      location: { 
+                        name: place.name,         
+                        country: place.country    
+                      },
+                      current: {
+                        temp_c: data.current.temperature,
+                        condition: { text: data.current.summary, icon: this.getIconUrl(data.current.icon_num) }
+                      }
+                    };
+
+                    this.forecast = data.daily.data.slice(0, 5).map((day: any) => ({
+                      date: day.day,
+                      avgtemp_c: day.all_day.temperature.max,
+                      condition: { text: day.summary, icon: this.getIconUrl(day.icon) }
+                    }));
+                  },
+                  (error) => {
+                    this.weather = null;
+                    this.forecast = [];
+                    Swal.fire({
+                      title: 'Weather data not found!',
+                      text: 'Please try again later.',
+                      icon: 'error',
+                      confirmButtonText: 'OK'
+                    });
+                  }
+                );
+            } else {
+              Swal.fire({
+                title: 'City not found!',
+                text: 'Please check the city name and try again.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              });
+            }
           },
           (error) => {
             this.weather = null;
             this.forecast = [];
             Swal.fire({
-              title: 'City not found!',
-              text: 'Please check the city name and try again.',
+              title: 'Error fetching places!',
+              text: 'Please try again later.',
               icon: 'error',
               confirmButtonText: 'OK'
             });
